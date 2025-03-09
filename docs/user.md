@@ -22,7 +22,9 @@ Response Body (Success) :
     "data" : {
         "id" : "random-string",
         "email" : "admin@gmail.com",
-        "name" : "Admin Admin"
+        "name" : "Admin Admin",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -87,7 +89,9 @@ Response Body (Success) :
     "data" : {
         "id" : "random-string",
         "email" : "admin@gmail.com",
-        "name" : "Admin Admin"
+        "name" : "Admin Admin",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -126,7 +130,9 @@ Response Body (Success) :
     "data" : {
         "id" : "random-string",
         "email" : "admin@gmail.com",
-        "name" : "Admin Admin"
+        "name" : "Admin Admin",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```

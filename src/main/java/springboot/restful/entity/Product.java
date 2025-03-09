@@ -1,4 +1,4 @@
-package entity;
+package springboot.restful.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +34,12 @@ public class Product {
     private Integer stock;
 
     private String description;
+
+    @Column(name = "created_at")
+    private String createdAt;
+
+    @Column(name = "updated_at")
+    private String updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

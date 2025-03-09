@@ -1,7 +1,8 @@
-package entity;
+package springboot.restful.entity;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -32,6 +33,12 @@ public class Contact {
     private String email;
 
     private String phone;
+
+    @Column(name = "created_at")
+    private String createdAt;
+
+    @Column(name = "updated_at")
+    private String updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

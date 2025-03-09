@@ -17,7 +17,7 @@ Request Body :
     "price_sell" : 900000.00,
     "stock" : 100,
     "description" : "Gaming mouse high end",
-    "category_id" : "random-string" // nullable
+    "category_id" : "random-string", // nullable
 }
 ```
 
@@ -36,7 +36,9 @@ Response Body (Success) :
         "category_product" : {
             "id" : "random-string",
             "name" : "Computer & Laptop"
-        }
+        },
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -86,7 +88,9 @@ Response Body (Success) :
         "category_product" : {
             "id" : "random-string",
             "name" : "Computer & Laptop"
-        }
+        },
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -123,7 +127,9 @@ Response Body (Success) :
         "category_product" : {
             "id" : "random-string",
             "name" : "Computer & Laptop"
-        }
+        },
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -170,7 +176,9 @@ Response Body (Success) :
             "category_product" : {
                 "id" : "random-string",
                 "name" : "Computer & Laptop"
-            }
+            },
+            "created_at" : "current-timestamp",
+            "updated_at" : "current-timestamp"
         }
     ],
     "paging" : {
@@ -239,7 +247,9 @@ Response Body (Success) :
             "category_product" : {
                 "id" : "random-string",
                 "name" : "Computer & Laptop"
-            }
+            },
+            "created_at" : "current-timestamp",
+            "updated_at" : "current-timestamp"
         }
     ]
 }

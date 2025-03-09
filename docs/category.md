@@ -23,7 +23,9 @@ Response Body (Success) :
     "messages" : "Create category success",
     "data" : {
         "id" : "random-string",
-        "name" : "Computer & Laptop"
+        "name" : "Computer & Laptop",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -60,7 +62,9 @@ Response Body (Success) :
     "messages" : "Update category success",
     "data" : {
         "id" : "random-string",
-        "name" : "Gaming"
+        "name" : "Gaming",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -89,7 +93,9 @@ Response Body (Success) :
     "messages" : "Get category success",
     "data" : {
         "id" : "random-string",
-        "name" : "Computer & Laptop"
+        "name" : "Computer & Laptop",
+        "created_at" : "current-timestamp",
+        "updated_at" : "current-timestamp"
     }
 }
 ```
@@ -125,7 +131,9 @@ Response Body (Success) :
     "data" : [
         {
             "id" : "random-string",
-            "name" : "Computer & Laptop"
+            "name" : "Computer & Laptop",
+            "created_at" : "current-timestamp",
+            "updated_at" : "current-timestamp"
         }
     ],
     "paging" : {

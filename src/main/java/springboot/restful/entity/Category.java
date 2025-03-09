@@ -1,7 +1,8 @@
-package entity;
+package springboot.restful.entity;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -24,6 +25,12 @@ public class Category {
     private String id;
 
     private String name;
+
+    @Column(name = "created_at")
+    private String createdAt;
+
+    @Column(name = "updated_at")
+    private String updatedAt;
 
     @OneToMany(mappedBy = "product")
     private List<Product> products;

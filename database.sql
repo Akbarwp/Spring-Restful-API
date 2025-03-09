@@ -10,6 +10,8 @@ CREATE TABLE users (
     name                    VARCHAR(255) NOT NULL,
     token                   VARCHAR(255),
     token_expired_at        BIGINT,
+    created_at              TIMESTAMP,
+    updated_at              TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE (token)
 ) ENGINE InnoDB;
@@ -25,6 +27,8 @@ CREATE TABLE contacts (
     email                   VARCHAR(255),
     phone                   VARCHAR(15),
     user_id                 VARCHAR(255) NOT NULL,
+    created_at              TIMESTAMP,
+    updated_at              TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY fk_users_contacts (user_id) REFERENCES users (id)
 ) ENGINE InnoDB;
@@ -41,6 +45,8 @@ CREATE TABLE addresses (
     country                 VARCHAR(255) NOT NULL,
     postal_code             VARCHAR(5) NOT NULL,
     contact_id              VARCHAR(255) NOT NULL,
+    created_at              TIMESTAMP,
+    updated_at              TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY fk_contacts_contacts (contact_id) REFERENCES contacts (id)
 ) ENGINE InnoDB;
@@ -52,7 +58,9 @@ DESC addresses;
 CREATE TABLE categories (
     id                      VARCHAR(255) NOT NULL,
     name                    VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id),
+    created_at              TIMESTAMP,
+    updated_at              TIMESTAMP,
+    PRIMARY KEY (id)
 ) ENGINE InnoDB;
 
 SELECT * FROM categories;
@@ -67,8 +75,10 @@ CREATE TABLE products (
     stock                   INT(100) NOT NULL,
     description             TEXT(255),
     category_id             VARCHAR(255) NOT NULL,
+    created_at              TIMESTAMP,
+    updated_at              TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY fk_categories_products (user_id) REFERENCES categories (id)
+    FOREIGN KEY fk_categories_products (category_id) REFERENCES categories (id)
 ) ENGINE InnoDB;
 
 SELECT * FROM products;

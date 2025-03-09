@@ -1,4 +1,4 @@
-package entity;
+package springboot.restful.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +30,12 @@ public class Address {
     private String province;
 
     private String country;
+
+    @Column(name = "created_at")
+    private String createdAt;
+
+    @Column(name = "updated_at")
+    private String updatedAt;
 
     @Column(name = "postal_code")
     private String postalCode;

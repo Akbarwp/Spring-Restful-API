@@ -1,4 +1,4 @@
-package entity;
+package springboot.restful.entity;
 
 import java.util.List;
 
@@ -31,6 +31,12 @@ public class User {
     private String name;
 
     private String token;
+
+    @Column(name = "created_at")
+    private String createdAt;
+
+    @Column(name = "updated_at")
+    private String updatedAt;
 
     @Column(name = "token_expired_at")
     private Long tokenExpiredAt;
