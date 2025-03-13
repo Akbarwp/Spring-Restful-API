@@ -32,6 +32,6 @@ public class Category {
     @Column(name = "updated_at")
     private String updatedAt;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 }

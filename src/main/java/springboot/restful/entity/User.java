@@ -1,5 +1,6 @@
 package springboot.restful.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -21,9 +22,9 @@ import lombok.Setter;
 
 public class User {
 
-    @Id
     private String id;
 
+    @Id
     private String email;
 
     private String password;
@@ -33,10 +34,10 @@ public class User {
     private String token;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_at")
-    private String updatedAt;
+    private Timestamp updatedAt;
 
     @Column(name = "token_expired_at")
     private Long tokenExpiredAt;

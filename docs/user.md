@@ -33,7 +33,6 @@ Response Body (Failed) :
 
 ```json
 {
-    "messages" : "Register failed",
     "errors" : "Email must not blank, ..."
 }
 ```
@@ -69,7 +68,6 @@ Response Body (Failed, 401) :
 
 ```json
 {
-    "messages" : "Login failed",
     "errors" : "Email or Password wrong"
 }
 ```
@@ -100,7 +98,6 @@ Response Body (Failed, 401) :
 
 ```json
 {
-    "messages" : "Login first",
     "errors" : "Unauthorized"
 }
 ```
@@ -141,7 +138,6 @@ Response Body (Failed, 401) :
 
 ```json
 {
-    "messages" : "Update user failed",
     "errors" : "Unauthorized"
 }
 ```
