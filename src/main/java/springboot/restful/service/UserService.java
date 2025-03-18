@@ -1,7 +1,6 @@
 package springboot.restful.service;
 
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import jakarta.validation.Validator;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import springboot.restful.entity.User;
 import springboot.restful.model.UserResponse;
 import springboot.restful.repository.UserRepository;
@@ -26,16 +22,11 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private Validator validator;
+    private ValdiationService valdiationService;
 
     @Transactional
     public void register(RegisterUserRequest request) {
-        Set<ConstraintViolation<RegisterUserRequest>> constraintViolation = validator.validate(request);
-
-        // show error
-        if (constraintViolation.size() != 0) {
-            throw new ConstraintViolationException(constraintViolation);
-        }
+        valdiationService.validate(request);
 
         if (userRepository.existsById(request.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered!");
