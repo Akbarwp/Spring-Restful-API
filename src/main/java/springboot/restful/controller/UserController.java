@@ -5,10 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import springboot.restful.entity.User;
 import springboot.restful.model.UserResponse;
 import springboot.restful.model.WebResponse;
 import springboot.restful.request.RegisterUserRequest;
 import springboot.restful.service.UserService;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -29,6 +32,18 @@ public class UserController {
 
         return WebResponse.<UserResponse> builder()
             .messages("Register success")
+            .data(userResponse)
+            .build();
+    }
+
+    @GetMapping(
+        path = "/users/current",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<UserResponse> get(User user) {
+        UserResponse userResponse = userService.get(user);
+
+        return WebResponse.<UserResponse> builder()
             .data(userResponse)
             .build();
     }

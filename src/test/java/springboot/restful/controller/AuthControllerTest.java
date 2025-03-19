@@ -19,10 +19,8 @@ import springboot.restful.request.LoginUserRequest;
 import springboot.restful.security.BCrypt;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.MockMvcBuilder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import java.sql.Timestamp;
 import java.util.UUID;

@@ -12,4 +12,6 @@ import springboot.restful.entity.User;
 public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByToken(String token);
 }
