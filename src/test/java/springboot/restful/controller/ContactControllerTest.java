@@ -237,4 +237,54 @@ public class ContactControllerTest {
                 assertTrue(contactRepository.existsById(response.getData().getId()));
             });
     }
+
+    @Test
+    void testDeleteContactNotFound() throws Exception {
+        mockMvc.perform(
+                delete("/contacts/123456")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isNotFound()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testDeleteContactSuccess() throws Exception {
+        User user = userRepository.findById("admin@gmail.com").orElseThrow();
+
+        Contact contact = new Contact();
+        contact.setId(UUID.randomUUID().toString());
+        contact.setFirstname("Ucup");
+        contact.setLastname("bin Otong");
+        contact.setEmail("admin@gmail.com");
+        contact.setPhone("081234567890");
+        contact.setUser(user);
+        contact.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        contact.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        contactRepository.save(contact);
+
+        mockMvc.perform(
+                delete("/contacts/" + contact.getId())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isOk()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNull(response.getErrors());
+                assertEquals("Delete contact success", response.getMessages());
+            });
+    }
+
 }
