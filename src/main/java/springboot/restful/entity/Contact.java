@@ -1,5 +1,6 @@
 package springboot.restful.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -35,10 +36,10 @@ public class Contact {
     private String phone;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_at")
-    private String updatedAt;
+    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
