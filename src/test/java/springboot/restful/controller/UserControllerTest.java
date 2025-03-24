@@ -15,6 +15,7 @@ import springboot.restful.entity.User;
 import springboot.restful.model.*;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.request.RegisterUserRequest;
+import springboot.restful.request.UpdateUserRequest;
 import springboot.restful.security.BCrypt;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -128,8 +129,8 @@ public class UserControllerTest {
     void testUserUnauthorized() throws Exception {
         mockMvc.perform(
                 get("/users/current")
-                .accept(MediaType.APPLICATION_JSON)
-                .header("X-API-TOKEN", "notfound")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", "notfound")
             )
             .andExpectAll(
                 status().isUnauthorized()
@@ -145,7 +146,7 @@ public class UserControllerTest {
     void testUserUnauthorizedTokenNotSend() throws Exception {
         mockMvc.perform(
                 get("/users/current")
-                .accept(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
             )
             .andExpectAll(
                 status().isUnauthorized()
@@ -173,8 +174,8 @@ public class UserControllerTest {
 
         mockMvc.perform(
                 get("/users/current")
-                .accept(MediaType.APPLICATION_JSON)
-                .header("X-API-TOKEN", user.getToken())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", user.getToken())
             )
             .andExpectAll(
                 status().isOk()
@@ -204,8 +205,8 @@ public class UserControllerTest {
 
         mockMvc.perform(
                 get("/users/current")
-                .accept(MediaType.APPLICATION_JSON)
-                .header("X-API-TOKEN", user.getToken())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", user.getToken())
             )
             .andExpectAll(
                 status().isUnauthorized()
@@ -214,6 +215,66 @@ public class UserControllerTest {
                 WebResponse<UserResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
 
                 assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testUpdateUserUnauthorized() throws Exception {
+        UpdateUserRequest request = new UpdateUserRequest();
+
+        mockMvc.perform(
+                patch("/users/current")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            )
+            .andExpectAll(
+                status().isUnauthorized()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testUpdateUserSuccess() throws Exception {
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setEmail("admin@gmail.com");
+        user.setPassword(BCrypt.hashpw("Admin123", BCrypt.gensalt()));
+        user.setName("Admin Admin");
+        user.setToken("TestToken");
+        user.setTokenExpiredAt(System.currentTimeMillis() + (1000 * 16 * 24 * 30));
+        user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        userRepository.save(user);
+
+        UpdateUserRequest request = new UpdateUserRequest();
+        request.setName("Ucup bin Otong");
+        request.setPassword("AdminGanteng123;");
+
+        mockMvc.perform(
+                patch("/users/current")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isOk()
+            )
+            .andDo(result -> {
+                WebResponse<UserResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                User userDB = userRepository.findById("admin@gmail.com").orElse(null);
+
+                assertNull(response.getErrors());
+                assertEquals("Ucup bin Otong", response.getData().getName());
+                assertEquals("admin@gmail.com", response.getData().getEmail());
+                assertTrue(BCrypt.checkpw("AdminGanteng123;", userDB.getPassword()));
             });
     }
 }

@@ -9,9 +9,11 @@ import springboot.restful.entity.User;
 import springboot.restful.model.UserResponse;
 import springboot.restful.model.WebResponse;
 import springboot.restful.request.RegisterUserRequest;
+import springboot.restful.request.UpdateUserRequest;
 import springboot.restful.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -44,6 +46,20 @@ public class UserController {
         UserResponse userResponse = userService.get(user);
 
         return WebResponse.<UserResponse> builder()
+            .data(userResponse)
+            .build();
+    }
+
+    @PatchMapping(
+        path = "/users/current",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<UserResponse> update(User user, @RequestBody UpdateUserRequest request) {
+        UserResponse userResponse = userService.update(user, request);
+
+        return WebResponse.<UserResponse> builder()
+            .messages("Update user success")
             .data(userResponse)
             .build();
     }

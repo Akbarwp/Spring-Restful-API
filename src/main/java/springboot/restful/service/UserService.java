@@ -1,6 +1,7 @@
 package springboot.restful.service;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import springboot.restful.entity.User;
 import springboot.restful.model.UserResponse;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.request.RegisterUserRequest;
+import springboot.restful.request.UpdateUserRequest;
 import springboot.restful.security.BCrypt;
 
 @Service
@@ -58,6 +60,23 @@ public class UserService {
     public UserResponse getByEmail(String email) {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        return get(user);
+    }
+
+    @Transactional
+    public UserResponse update(User user, UpdateUserRequest request) {
+        valdiationService.validate(request);
+
+        if (Objects.nonNull(request.getName())) {
+            user.setName(request.getName());
+        }
+
+        if (Objects.nonNull(request.getPassword())) {
+            user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+        }
+
+        userRepository.save(user);
 
         return get(user);
     }
