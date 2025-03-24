@@ -54,9 +54,11 @@ public class AuthControllerTest {
             post("/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+            )
             .andExpectAll(
-                status().isUnauthorized())
+                status().isUnauthorized()
+            )
             .andDo(result -> {
                 WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
 
@@ -84,9 +86,11 @@ public class AuthControllerTest {
             post("/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+            )
             .andExpectAll(
-                status().isUnauthorized())
+                status().isUnauthorized()
+            )
             .andDo(result -> {
                 WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
 
@@ -114,9 +118,11 @@ public class AuthControllerTest {
             post("/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+            )
             .andExpectAll(
-                status().isOk())
+                status().isOk()
+            )
             .andDo(result -> {
                 WebResponse<TokenResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
 
@@ -131,6 +137,61 @@ public class AuthControllerTest {
                 assertNotNull(userDB);
                 assertEquals(userDB.getToken(), response.getData().getToken());
                 assertEquals(userDB.getTokenExpiredAt(), response.getData().getExpiredAt());
+            });
+    }
+
+    @Test
+    void testLogoutFailed() throws Exception {
+        mockMvc.perform(
+            delete("/auth/logout")
+                .accept(MediaType.APPLICATION_JSON)
+            )
+            .andExpectAll(
+                status().isUnauthorized()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testLogoutSuccess() throws Exception {
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setEmail("admin@gmail.com");
+        user.setPassword(BCrypt.hashpw("Admin123", BCrypt.gensalt()));
+        user.setName("Admin Admin");
+        user.setToken("TestToken");
+        user.setTokenExpiredAt(System.currentTimeMillis() + (1000 * 16 * 24 * 30));
+        user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        userRepository.save(user);
+
+        LoginUserRequest request = new LoginUserRequest();
+        request.setEmail("admin@gmail.com");
+        request.setPassword("Admin123");
+
+        mockMvc.perform(
+            delete("/auth/logout")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isOk()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNull(response.getErrors());
+                assertEquals("Logout success", response.getMessages());
+
+                User userDB = userRepository.findById("admin@gmail.com").orElse(null);
+                assertNotNull(userDB);
+                assertNull(userDB.getToken());
+                assertNull(userDB.getTokenExpiredAt());
             });
     }
 }
