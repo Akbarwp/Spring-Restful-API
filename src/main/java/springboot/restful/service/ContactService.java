@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import springboot.restful.entity.Contact;
 import springboot.restful.entity.User;
@@ -22,7 +24,7 @@ public class ContactService {
     @Autowired
     private ValdiationService valdiationService;
 
-    public ContactResponse response(Contact contact) {
+    private ContactResponse toContactResponse(Contact contact) {
         return ContactResponse.builder()
             .id(contact.getId())
             .firstname(contact.getFirstname())
@@ -50,6 +52,14 @@ public class ContactService {
 
         contactRepository.save(contact);
 
-        return response(contact);
+        return toContactResponse(contact);
+    }
+
+    @Transactional(readOnly = true)
+    public ContactResponse get(User user, String id) {
+        Contact contact = contactRepository.findByUserAndId(user, id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found"));
+
+        return toContactResponse(contact);
     }
 }

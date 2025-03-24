@@ -46,7 +46,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserResponse response(User user) {
+    public UserResponse get(User user) {
         return UserResponse.builder()
             .id(user.getId())
             .email(user.getEmail())
@@ -61,7 +61,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        return response(user);
+        return get(user);
     }
 
     @Transactional
@@ -78,6 +78,6 @@ public class UserService {
 
         userRepository.save(user);
 
-        return response(user);
+        return get(user);
     }
 }

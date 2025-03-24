@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import springboot.restful.entity.Contact;
 import springboot.restful.entity.User;
 import springboot.restful.model.*;
 import springboot.restful.repository.ContactRepository;
@@ -109,8 +110,62 @@ public class ContactControllerTest {
                 assertEquals("Ucup", response.getData().getFirstname());
                 assertEquals("bin Otong", response.getData().getLastname());
                 assertEquals("ucup@gmail.com", response.getData().getEmail());
-                assertEquals("08123456789", response.getData().getPhone());
+                assertEquals("081234567890", response.getData().getPhone());
                 assertTrue(contactRepository.existsById(response.getData().getId()));
             });
     }
+
+    @Test
+    void testGetContactNotFound() throws Exception {
+        mockMvc.perform(
+                get("/contacts/123456")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isNotFound()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testGetContactSuccess() throws Exception {
+        User user = userRepository.findById("admin@gmail.com").orElseThrow();
+
+        Contact contact = new Contact();
+        contact.setId(UUID.randomUUID().toString());
+        contact.setFirstname("Ucup");
+        contact.setLastname("bin Otong");
+        contact.setEmail("ucup@gmail.com");
+        contact.setPhone("081234567890");
+        contact.setUser(user);
+        contact.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        contact.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        contactRepository.save(contact);
+
+        mockMvc.perform(
+                get("/contacts/" + contact.getId())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isOk()
+            )
+            .andDo(result -> {
+                WebResponse<ContactResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNull(response.getErrors());
+                assertEquals(contact.getId(), response.getData().getId());
+                assertEquals(contact.getFirstname(), response.getData().getFirstname());
+                assertEquals(contact.getLastname(), response.getData().getLastname());
+                assertEquals(contact.getEmail(), response.getData().getEmail());
+                assertEquals(contact.getPhone(), response.getData().getPhone());
+            });
+    }
+
 }
