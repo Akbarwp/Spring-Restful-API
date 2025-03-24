@@ -17,6 +17,7 @@ import springboot.restful.model.*;
 import springboot.restful.repository.ContactRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.request.CreateContactRequest;
+import springboot.restful.request.UpdateContactRequest;
 import springboot.restful.security.BCrypt;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -168,4 +169,72 @@ public class ContactControllerTest {
             });
     }
 
+    @Test
+    void testUpdateContactBadRequest() throws Exception {
+        UpdateContactRequest request = new UpdateContactRequest();
+        request.setFirstname("");
+        request.setLastname("");
+        request.setEmail("");
+        request.setPhone("");
+
+        mockMvc.perform(
+                put("/contacts/123456")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isBadRequest()
+            )
+            .andDo(result -> {
+                WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNotNull(response.getErrors());
+            });
+    }
+
+    @Test
+    void testUpdateContactSuccess() throws Exception {
+        User user = userRepository.findById("admin@gmail.com").orElseThrow();
+
+        Contact contact = new Contact();
+        contact.setId(UUID.randomUUID().toString());
+        contact.setFirstname("Ucup");
+        contact.setLastname("bin Otong");
+        contact.setEmail("admin@gmail.com");
+        contact.setPhone("081234567890");
+        contact.setUser(user);
+        contact.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        contact.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        contactRepository.save(contact);
+
+        UpdateContactRequest request = new UpdateContactRequest();
+        request.setFirstname("Otong");
+        request.setLastname("Surotong");
+        request.setEmail("ucup@gmail.com");
+        request.setPhone("081234567891");
+
+        mockMvc.perform(
+                put("/contacts/" + contact.getId())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+                    .header("X-API-TOKEN", "TestToken")
+            )
+            .andExpectAll(
+                status().isOk()
+            )
+            .andDo(result -> {
+                WebResponse<ContactResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+                assertNull(response.getErrors());
+                assertEquals(request.getFirstname(), response.getData().getFirstname());
+                assertEquals(request.getLastname(), response.getData().getLastname());
+                assertEquals(request.getEmail(), response.getData().getEmail());
+                assertEquals(request.getPhone(), response.getData().getPhone());
+                assertTrue(contactRepository.existsById(response.getData().getId()));
+            });
+    }
 }

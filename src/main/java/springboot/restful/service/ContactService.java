@@ -14,6 +14,7 @@ import springboot.restful.entity.User;
 import springboot.restful.model.ContactResponse;
 import springboot.restful.repository.ContactRepository;
 import springboot.restful.request.CreateContactRequest;
+import springboot.restful.request.UpdateContactRequest;
 
 @Service
 public class ContactService {
@@ -59,6 +60,26 @@ public class ContactService {
     public ContactResponse get(User user, String id) {
         Contact contact = contactRepository.findByUserAndId(user, id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found"));
+
+        return toContactResponse(contact);
+    }
+
+    @Transactional
+    public ContactResponse update(User user, UpdateContactRequest request) {
+        valdiationService.validate(request);
+
+        Contact contact = contactRepository.findByUserAndId(user, request.getId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found"));
+
+        contact.setFirstname(request.getFirstname());
+        contact.setLastname(request.getLastname());
+        contact.setEmail(request.getEmail());
+        contact.setPhone(request.getPhone());
+        contact.setUser(user);
+        contact.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        contact.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        contactRepository.save(contact);
 
         return toContactResponse(contact);
     }
