@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import springboot.restful.entity.User;
 import springboot.restful.model.*;
+import springboot.restful.repository.AddressRepository;
+import springboot.restful.repository.ContactRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.request.RegisterUserRequest;
 import springboot.restful.request.UpdateUserRequest;
@@ -36,10 +38,18 @@ public class UserControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
+        addressRepository.deleteAll();
+        contactRepository.deleteAll();
         userRepository.deleteAll();
     }
 

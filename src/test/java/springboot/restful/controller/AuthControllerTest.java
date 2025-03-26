@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import springboot.restful.entity.User;
 import springboot.restful.model.TokenResponse;
 import springboot.restful.model.WebResponse;
+import springboot.restful.repository.AddressRepository;
+import springboot.restful.repository.ContactRepository;
 import springboot.restful.repository.UserRepository;
 import springboot.restful.request.LoginUserRequest;
 import springboot.restful.security.BCrypt;
@@ -37,10 +39,18 @@ public class AuthControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
+        addressRepository.deleteAll();
+        contactRepository.deleteAll();
         userRepository.deleteAll();
     }
 

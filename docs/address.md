@@ -16,7 +16,7 @@ Request Body :
     "city" : "Sidoarjo",
     "province" : "East Java",
     "country" : "Indonesia",
-    "postal_code" : "12345"
+    "postalCode" : "12345"
 }
 ```
 
@@ -31,7 +31,7 @@ Response Body (Success) :
         "city" : "Sidoarjo",
         "province" : "East Java",
         "country" : "Indonesia",
-        "postal_code" : "12345",
+        "postalCode" : "12345",
         "created_at" : "current-timestamp",
         "updated_at" : "current-timestamp"
     }
@@ -63,7 +63,7 @@ Request Body :
     "city" : "Surabaya",
     "province" : "East Java",
     "country" : "Indonesia",
-    "postal_code" : "54321"
+    "postalCode" : "54321"
 }
 ```
 
@@ -78,7 +78,7 @@ Response Body (Success) :
         "city" : "Surabaya",
         "province" : "East Java",
         "country" : "Indonesia",
-        "postal_code" : "54321",
+        "postalCode" : "54321",
         "created_at" : "current-timestamp",
         "updated_at" : "current-timestamp"
     }
@@ -113,7 +113,7 @@ Response Body (Success) :
         "city" : "Sidoarjo",
         "province" : "East Java",
         "country" : "Indonesia",
-        "postal_code" : "12345",
+        "postalCode" : "12345",
         "created_at" : "current-timestamp",
         "updated_at" : "current-timestamp"
     }
@@ -174,7 +174,7 @@ Response Body (Success) :
             "city" : "Sidoarjo",
             "province" : "East Java",
             "country" : "Indonesia",
-            "postal_code" : "12345",
+            "postalCode" : "12345",
             "created_at" : "current-timestamp",
             "updated_at" : "current-timestamp"
         }

@@ -1,5 +1,7 @@
 package springboot.restful.entity;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,14 +33,14 @@ public class Address {
 
     private String country;
 
-    @Column(name = "created_at")
-    private String createdAt;
-
-    @Column(name = "updated_at")
-    private String updatedAt;
-
     @Column(name = "postal_code")
     private String postalCode;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
