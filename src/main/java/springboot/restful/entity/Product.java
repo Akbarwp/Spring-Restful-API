@@ -1,5 +1,7 @@
 package springboot.restful.entity;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -36,10 +38,10 @@ public class Product {
     private String description;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private Timestamp createdAt;
 
     @Column(name = "updated_at")
-    private String updatedAt;
+    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

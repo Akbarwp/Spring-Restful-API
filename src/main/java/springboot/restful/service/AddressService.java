@@ -94,7 +94,6 @@ public class AddressService {
         address.setCountry(request.getCountry());
         address.setPostalCode(request.getPostalCode());
         address.setContact(contact);
-        address.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         address.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         addressRepository.save(address);

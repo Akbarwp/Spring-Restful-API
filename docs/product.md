@@ -17,7 +17,7 @@ Request Body :
     "price_sell" : 900000.00,
     "stock" : 100,
     "description" : "Gaming mouse high end",
-    "category_id" : "random-string", // nullable
+    "category_id" : "random-string"
 }
 ```
 
@@ -69,7 +69,7 @@ Request Body :
     "price_sell" : 950000.00,
     "stock" : 50,
     "description" : "Gaming mouse high end",
-    "category_id" : "random-string" // nullable
+    "category_id" : "random-string"
 }
 ```
 

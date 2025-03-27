@@ -65,7 +65,6 @@ public class CategoryService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
         category.setName(request.getName());
-        category.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         category.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         categoryRepository.save(category);

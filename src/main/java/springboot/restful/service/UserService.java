@@ -70,10 +70,12 @@ public class UserService {
 
         if (Objects.nonNull(request.getName())) {
             user.setName(request.getName());
+            user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         }
 
         if (Objects.nonNull(request.getPassword())) {
             user.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+            user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         }
 
         userRepository.save(user);

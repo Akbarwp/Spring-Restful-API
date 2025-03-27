@@ -86,7 +86,6 @@ public class ContactService {
         contact.setEmail(request.getEmail());
         contact.setPhone(request.getPhone());
         contact.setUser(user);
-        contact.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         contact.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         contactRepository.save(contact);
